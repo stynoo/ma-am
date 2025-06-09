@@ -174,7 +174,7 @@ def main():
                 print(f"🔎 Focused on: {', '.join(mentioned)}")
                 response = agent_executor.invoke({"input": question, "focus": ", ".join(mentioned)})
             else:
-                response = agent_executor.invoke({"input": question})
+                response = agent_executor.invoke({"input": question, "focus": ""})
 
             print("\n🤖 GPT Health Coach:", response["output"])
 

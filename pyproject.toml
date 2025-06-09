@@ -1,26 +1,26 @@
 [tool.poetry]
 name = "ma-am"
 version = "0.1.0"
-description = ""
+description = "Minimal agent-based wearable health assistant using LangChain and InfluxDB"
 authors = ["stynoo <17745813+stynoo@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
 openai = "^1.82.1"
-influxdb-client = "^1.49.0"
-pandas = "^2.2.3"
-langchain-community = "^0.3.24"
 influxdb = "^5.3.2"
-langchain-openai = "^0.3.18"
 langchain = "^0.3.25"
 langchain-core = "^0.3.63"
+langchain-community = "^0.3.24"
+langchain-openai = "^0.3.18"
 python-dotenv = "^1.1.0"
-
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
 pylint = "^3.3.7"
+
+[tool.poetry.scripts]
+ma-am = "ma-am:main"
 
 [build-system]
 requires = ["poetry-core"]
