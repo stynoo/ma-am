@@ -57,7 +57,7 @@ def query_measurement(params: str) -> str:
 
         if mode == "summary":
             summary = defaultdict(lambda: defaultdict(list))  # {field: {day: [values]}}
-            today = datetime.utcnow().strftime('%Y-%m-%d')
+            today = datetime.now(UTC).strftime('%Y-%m-%d')
 
             for entry in entries:
                 ts = entry.get("time")
@@ -73,12 +73,27 @@ def query_measurement(params: str) -> str:
             output = f"📊 Summary for '{measurement}' over {time_match.group(1) if time_match else 'recent'}:\n"
             has_data = False
 
+            
             for field, day_dict in summary.items():
-                daily_totals = [sum(vs) for vs in day_dict.values()]
-                if daily_totals:
+                day_values = list(day_dict.values())
+                daily_sums = [sum(vs) for vs in day_values]
+                raw_values = [v for vs in day_values for v in vs]
+
+                if not raw_values:
+                    continue
+
+                mean_raw = sum(raw_values) / len(raw_values)
+                mean_daily = sum(daily_sums) / len(daily_sums)
+
+                if mean_daily > 5 * mean_raw:
                     has_data = True
-                    mean = sum(daily_totals) / len(daily_totals)
-                    output += f"- {field}: mean={mean:.2f}, min={min(daily_totals):.2f}, max={max(daily_totals):.2f}\n"
+                    output += f"- {field}: [daily totals] mean={mean_daily:.2f}, min={min(daily_sums):.2f}, max={max(daily_sums):.2f}
+"
+                else:
+                    has_data = True
+                    output += f"- {field}: [raw values] mean={mean_raw:.2f}, min={min(raw_values):.2f}, max={max(raw_values):.2f}
+"
+
             return "Observation: " + (output.strip() if has_data else f"⚠️ All numeric fields in '{measurement}' contain only zero or missing values.")
 
         else:
@@ -174,7 +189,7 @@ def main():
                 print(f"🔎 Focused on: {', '.join(mentioned)}")
                 response = agent_executor.invoke({"input": question, "focus": ", ".join(mentioned)})
             else:
-                response = agent_executor.invoke({"input": question, "focus": ""})
+                response = agent_executor.invoke({"input": question})
 
             print("\n🤖 GPT Health Coach:", response["output"])
 
@@ -183,4 +198,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
