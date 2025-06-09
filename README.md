@@ -41,7 +41,7 @@ OPENAI_MODEL=gpt-4o
 Run the agent:
 
 ```bash
-poetry run ma-am
+poetry run python ma-am.py
 ```
 
 Example prompts:

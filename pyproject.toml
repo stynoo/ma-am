@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Minimal agent-based wearable health assistant using LangChain and InfluxDB"
 authors = ["stynoo <17745813+stynoo@users.noreply.github.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -20,7 +21,7 @@ black = "^25.1.0"
 pylint = "^3.3.7"
 
 [tool.poetry.scripts]
-ma-am = "ma-am:main"
+ma-am = "runner:main"
 
 [build-system]
 requires = ["poetry-core"]
